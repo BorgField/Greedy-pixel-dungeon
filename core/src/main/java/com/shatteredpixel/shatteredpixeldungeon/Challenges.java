@@ -36,10 +36,8 @@ public class Challenges {
 	public static final int NO_SCROLLS		    = 64;
 	public static final int CHAMPION_ENEMIES	= 128;
 	public static final int STRONGER_BOSSES 	= 256;
-	public static final int SPD_CHALLENGE_MAX   = 511;
-	public static final int TEST_MODE			= 1<<9;;
 
-	public static final int MAX_VALUE           = (1<<19)-1;
+	public static final int MAX_VALUE           = 511;
 
 	public static final String[] NAME_IDS = {
 			"champion_enemies",
@@ -50,20 +48,17 @@ public class Challenges {
 			"no_herbalism",
 			"swarm_intelligence",
 			"darkness",
-			"no_scrolls",
-
-			"test_mode"
+			"no_scrolls"
 	};
 
 	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS,
-			TEST_MODE
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
 	};
 
 	public static int activeChallenges(){
 		int chCount = 0;
-		for (long ch : Challenges.MASKS){
-			if ((Dungeon.challenges & ch) != 0 && ch <= SPD_CHALLENGE_MAX) chCount++;
+		for (int ch : Challenges.MASKS){
+			if ((Dungeon.challenges & ch) != 0) chCount++;
 		}
 		return chCount;
 	}
