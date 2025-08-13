@@ -46,7 +46,7 @@ public class Challenges {
 	public static final int MINIGAMES          = 1<<14;  // 索引14
 	public static final int MINIPOTION         = 1<<15;  // 索引15
 
-	public static final int MAX_VALUE           = (1<<19)-1;
+	public static final int MAX_VALUE           = 511;
 
 	public static final int TRADITIONAL_COUNT = 9; // 对应索引0-9
 
