@@ -72,7 +72,10 @@ public class Messages {
 			Assets.Messages.PLANTS,
 			Assets.Messages.SCENES,
 			Assets.Messages.UI,
-			Assets.Messages.WINDOWS
+			Assets.Messages.WINDOWS,
+
+			Assets.Messages.CUSTOM,
+			Assets.Messages.TEXT
 	};
 
 	static{
