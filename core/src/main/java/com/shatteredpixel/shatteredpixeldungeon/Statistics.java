@@ -270,4 +270,8 @@ public class Statistics {
 		info.maxDepth       = bundle.getInt( DEEPEST );
 	}
 
+	public static long real_seconds = 0;
+	public static float second_elapsed = 0;
+	public static float turnsPassed = 0f;
+
 }
