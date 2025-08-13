@@ -238,6 +238,7 @@ public class SPDSettings extends GameSettings {
 	
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
+	public static final String KEY_DLC_SETTINGS = "dlc_settings";
 	public static final String KEY_CUSTOM_SEED	= "custom_seed";
 	public static final String KEY_LAST_DAILY	= "last_daily";
 	public static final String KEY_INTRO		= "intro";
@@ -263,6 +264,12 @@ public class SPDSettings extends GameSettings {
 	
 	public static void challenges( int value ) {
 		put( KEY_CHALLENGES, value );
+	}
+	public static void dlcSettings(int dlcValue) {
+		put(KEY_DLC_SETTINGS , dlcValue);
+	}
+	public static int dlcSettings() {
+		return getInt( KEY_DLC_SETTINGS, 0, 0, Challenges.MAX_VALUE );
 	}
 	
 	public static int challenges() {

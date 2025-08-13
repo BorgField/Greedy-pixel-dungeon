@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2025 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,42 +23,76 @@ package com.shatteredpixel.shatteredpixeldungeon;
 
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 
 public class Challenges {
 
 	//Some of these internal IDs are outdated and don't represent what these challenges do
-	public static final int NO_FOOD				= 1;
-	public static final int NO_ARMOR			= 2;
-	public static final int NO_HEALING			= 4;
-	public static final int NO_HERBALISM		= 8;
-	public static final int SWARM_INTELLIGENCE	= 16;
-	public static final int DARKNESS			= 32;
-	public static final int NO_SCROLLS		    = 64;
-	public static final int CHAMPION_ENEMIES	= 128;
-	public static final int STRONGER_BOSSES 	= 256;
+	public static final int CHAMPION_ENEMIES   = 1;      // 对应索引0
+	public static final int STRONGER_BOSSES    = 1<<1;   // 索引1
+	public static final int NO_FOOD            = 1<<2;   // 索引2
+	public static final int NO_ARMOR           = 1<<3;   // 索引3
+	public static final int NO_HEALING         = 1<<4;   // 索引4
+	public static final int NO_HERBALISM       = 1<<5;   // 索引5
+	public static final int SWARM_INTELLIGENCE = 1<<6;   // 索引6
+	public static final int DARKNESS           = 1<<7;   // 索引7
+	public static final int NO_SCROLLS         = 1<<8;   // 索引8
+	public static final int TEST_MODE          = 1<<9;   // 索引9
+	public static final int MIMIC_DUNGEON      = 1<<10;  // 索引10
+	public static final int ELITE_BOSSES       = 1<<11;  // 索引11
+	public static final int ELITE_ENEMIES      = 1<<12;  // 索引12
+	public static final int EXPANSION_ENCH     = 1<<13;  // 索引13
+	public static final int MINIGAMES          = 1<<14;  // 索引14
+	public static final int MINIPOTION         = 1<<15;  // 索引15
 
-	public static final int MAX_VALUE           = 511;
+	public static final int MAX_VALUE           = (1<<19)-1;
 
+	public static final int TRADITIONAL_COUNT = 9; // 对应索引0-9
+
+	// 确保NAME_IDS和MASKS严格按索引顺序排列
 	public static final String[] NAME_IDS = {
-			"champion_enemies",
-			"stronger_bosses",
-			"no_food",
-			"no_armor",
-			"no_healing",
-			"no_herbalism",
-			"swarm_intelligence",
-			"darkness",
-			"no_scrolls"
+			"champion_enemies",      // 0
+			"stronger_bosses",        // 1
+			"no_food",                // 2
+			"no_armor",               // 3
+			"no_healing",             // 4
+			"no_herbalism",           // 5
+			"swarm_intelligence",      // 6
+			"darkness",                // 7
+			"no_scrolls",              // 8
+			"test_mode",               // 9
+			"mimic_dungeon",           // 10
+			"elite_bosses",            // 11
+			"elite_enemies",           // 12
+			"expansion_ench",          // 13
+			"minigames",                // 14
+			"minipotion"               // 15
 	};
 
-	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS
+	public static final long[] MASKS = {
+			CHAMPION_ENEMIES,
+			STRONGER_BOSSES,
+			NO_FOOD,
+			NO_ARMOR,
+			NO_HEALING,
+			NO_HERBALISM,
+			SWARM_INTELLIGENCE,
+			DARKNESS,
+			NO_SCROLLS,
+			TEST_MODE,
+			MIMIC_DUNGEON,
+			ELITE_BOSSES,
+			ELITE_ENEMIES,
+			EXPANSION_ENCH,
+			MINIGAMES,
+			MINIPOTION
 	};
 
 	public static int activeChallenges(){
 		int chCount = 0;
-		for (int ch : Challenges.MASKS){
-			if ((Dungeon.challenges & ch) != 0) chCount++;
+		for (long ch : Challenges.MASKS){
+			if ((Dungeon.challenges & ch) != 0 && ch <= 8) chCount++;
 		}
 		return chCount;
 	}
@@ -67,6 +101,18 @@ public class Challenges {
 
 		if (Dungeon.isChallenged(NO_HERBALISM) && item instanceof Dewdrop){
 			return true;
+		}
+
+		if(Dungeon.isChallenged(ELITE_ENEMIES)){
+			if(item instanceof WandOfBlastWave){
+				return true;
+			}
+		}
+
+		if(Dungeon.isChallenged(ELITE_ENEMIES | ELITE_BOSSES)){
+			if(item instanceof RingOfElements){
+				return true;
+			}
 		}
 
 		return false;
