@@ -15,7 +15,7 @@ allprojects {
 
     ext {
         appName = 'Greedy Pixel Dungeon'
-        appPackageName = 'com.greedypixel.greedypixeldungeon'
+        appPackageName = 'com.fieldpixel.greedypixeldungeon'
 
         appVersionCode = 846
         appVersionName = '0.0.1'

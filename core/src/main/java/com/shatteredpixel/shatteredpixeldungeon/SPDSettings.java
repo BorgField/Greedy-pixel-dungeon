@@ -57,6 +57,9 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_GRID 	    = "visual_grid";
 	public static final String KEY_CAMERA_FOLLOW= "camera_follow";
 	public static final String KEY_SCREEN_SHAKE = "screen_shake";
+	private static final String KEY_DARK	= "dark_ui";
+	private static final String KEY_ItemsUI	= "items_ui";
+
 	
 	public static void fullscreen( boolean value ) {
 		put( KEY_FULLSCREEN, value );
@@ -481,5 +484,21 @@ public class SPDSettings extends GameSettings {
 
 	public static int fulLScreenMonitor(){
 		return getInt( KEY_FULLSCREEN_MONITOR, 0 );
+	}
+
+	public static void ClassUI(boolean value) {
+		put( KEY_DARK, value );
+	}
+
+	public static boolean ClassUI() {
+		return getBoolean(KEY_DARK, false);
+	}
+
+	public static void ItemsUI( int value ) {
+		put(KEY_ItemsUI, value);
+	}
+
+	public static int ItemsUI() {
+		return getInt(KEY_ItemsUI, 0, 0, 1);
 	}
 }
