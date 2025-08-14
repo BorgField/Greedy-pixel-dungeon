@@ -506,6 +506,6 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static int ItemsUI() {
-		return getInt(KEY_ItemsUI, 0, 0, 1);
+		return getInt(KEY_ItemsUI, 0, 0, 2);
 	}
 }
