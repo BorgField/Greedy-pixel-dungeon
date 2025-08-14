@@ -730,19 +730,19 @@ public class Toolbar extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			base = new Image( Assets.Interfaces.TOOLBAR );
+			base = new Image( SPDSettings.ClassUI() ? Assets.Interfaces.TOOLBAR : Assets.Interfaces.TOOLBAR_SPD );
 			add( base );
 		}
 
-		@Override
-		public void update() {
-			super.update();
-			if (SPDSettings.ClassUI()) {
-				base.texture = TextureCache.get(Assets.Interfaces.TOOLBAR);
-			} else {
-				base.texture = TextureCache.get(Assets.Interfaces.TOOLBAR_SPD);
-			}
-		}
+//		@Override
+//		public void update() {
+//			super.update();
+//			if (SPDSettings.ClassUI()) {
+//				base.texture = TextureCache.get(Assets.Interfaces.TOOLBAR);
+//			} else {
+//				base.texture = TextureCache.get(Assets.Interfaces.TOOLBAR_SPD);
+//			}
+//		}
 		
 		@Override
 		protected void layout() {
