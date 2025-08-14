@@ -10,6 +10,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
@@ -104,12 +105,13 @@ public class TestArtifact extends TestGenerator {
             case 10: return TalismanOfForesight.class;
             case 11: return TimekeepersHourglass.class;
             case 12: default: return UnstableSpellbook.class;
+            case 13: return HolyTome.class;
         }
     }
 
     private int maxLevel(int id){
         switch (id){
-            case 0: case 1: case 2: case 3: case 4: case 6: case 8: case 10: case 12: default: return 10;
+            case 0: case 1: case 2: case 3: case 4: case 6: case 8: case 10: case 12: case 13: default: return 10;
             case 5: case 11: return 5;
             case 7: case 9: return 3;
         }
@@ -118,7 +120,7 @@ public class TestArtifact extends TestGenerator {
     private static ArrayList<Class<? extends Artifact>> artifactList = new ArrayList<Class<? extends Artifact>>();
     private void buildArtifactArray(){
         if(!artifactList.isEmpty()) return;
-        for(int i=0;i<13;++i){
+        for(int i=0;i<14;++i){
             artifactList.add(idToArtifact(i));
         }
     }
@@ -199,14 +201,21 @@ public class TestArtifact extends TestGenerator {
                 im.frame(ItemSpriteSheet.film.get(Objects.requireNonNull(Reflection.newInstance(artifactList.get(i))).image));
                 im.scale.set(1f);
                 btn.icon(im);
-                if(i<7) {
-                    left = (WIDTH - BTN_SIZE * 7) / 2f;
+
+                left = (WIDTH - BTN_SIZE * 7) / 2f;
+                if (i < 7) {
                     btn.setRect(left + placed * BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
+                } else {
+                    btn.setRect(left + (placed - 7) * BTN_SIZE, top + GAP + BTN_SIZE, BTN_SIZE, BTN_SIZE);
                 }
-                else {
-                    left = (WIDTH - BTN_SIZE * 6) / 2f;
-                    btn.setRect(left + (placed-7) * BTN_SIZE, top + GAP + BTN_SIZE, BTN_SIZE, BTN_SIZE);
-                }
+//                if(i<7) {
+//                    left = (WIDTH - BTN_SIZE * 7) / 2f;
+//                    btn.setRect(left + placed * BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
+//                }
+//                else {
+//                    left = (WIDTH - BTN_SIZE * 6) / 2f;
+//                    btn.setRect(left + (placed-7) * BTN_SIZE, top + GAP + BTN_SIZE, BTN_SIZE, BTN_SIZE);
+//                }
                 add(btn);
                 placed++;
                 artifactSprites.add(btn);

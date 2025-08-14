@@ -6,4 +6,6 @@ sourceCompatibility = targetCompatibility = appJavaCompatibility
 dependencies {
     api project(':SPD-classes')
     implementation project(':services')
+
+    implementation 'net.iharder:base64:2.3.9'
 }
