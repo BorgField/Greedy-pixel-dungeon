@@ -755,7 +755,7 @@ public class WndSettings extends WndTabbed {
 					Messages.get(this, "items_ui"),
 					Messages.get(this, "ui_1"),
 					Messages.get(this, "ui_2"),
-					0, 1) {
+					0, 2) {
 				@Override
 				protected void onChange() {
 					SPDSettings.ItemsUI(getSelectedValue());

@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.custom.ch.mimic.MimicStatusAffac
 import com.shatteredpixel.shatteredpixeldungeon.custom.ch.mob.EnemyTome;
 import com.shatteredpixel.shatteredpixeldungeon.custom.ch.mob.ScrollOfUpgradeEater;
 import com.shatteredpixel.shatteredpixeldungeon.custom.dict.DictBook;
+import com.shatteredpixel.shatteredpixeldungeon.custom.dict.NewDictBook;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.BackpackCleaner;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.BlobsEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.CustomWeapon;
@@ -387,7 +388,6 @@ public enum HeroClass {
 	}
 
 	private static void doChallengeSpawn(Hero hero) {
-		new ChallengeBag().collect();
 
 		new DictBook().collect();
 //		new NewDictBook().collect();
