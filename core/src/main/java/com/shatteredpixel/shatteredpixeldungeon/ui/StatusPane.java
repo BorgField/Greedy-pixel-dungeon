@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndHero;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -81,7 +82,6 @@ public class StatusPane extends Component {
 
 	public StatusPane( boolean large ){
 		super();
-
 		String asset = (SPDSettings.ClassUI() ? Assets.Interfaces.STATUS : Assets.Interfaces.STATUS_SPD);
 
 		this.large = large;
