@@ -94,6 +94,7 @@ public class TerrainPlacer extends TestItem {
 
             name = PixelScene.renderTextBlock("深渊",9);
             name.setPos((110 - name.width()) / 2,112);
+            name.hardlight(Window.TITLE_COLOR);
             add(name);
 
             resize(110,114 + (int)name.height());

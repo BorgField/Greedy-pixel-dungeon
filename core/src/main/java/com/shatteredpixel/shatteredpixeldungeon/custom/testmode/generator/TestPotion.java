@@ -16,11 +16,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ArcaneBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Firebomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.FlashBangBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.FrostBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.HolyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Noisemaker;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.RegrowthBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.ShrapnelBomb;
+import com.shatteredpixel.shatteredpixeldungeon.items.bombs.SmokeBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.WoollyBomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Berry;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Blandfruit;
@@ -71,6 +73,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenHilt;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.BrokenStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.CloakScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.remains.SealShard;
+import com.shatteredpixel.shatteredpixeldungeon.items.remains.TornPage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfLullaby;
@@ -114,6 +117,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.EyeOfNewt;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.FerretTuft;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
@@ -418,12 +422,12 @@ public class TestPotion extends TestGenerator {
             case 0: return Bomb.class;
             case 1: return ArcaneBomb.class;
             case 2: return Firebomb.class;
-            case 3: ;
+            case 3: return FlashBangBomb.class;
             case 4: return FrostBomb.class;
             case 5: return HolyBomb.class;
             case 6: return Noisemaker.class;
             case 7: return RegrowthBomb.class;
-            case 8: ;
+            case 8: return SmokeBomb.class;
             case 9: return ShrapnelBomb.class;
             case 10: default: return WoollyBomb.class;
         }
@@ -507,6 +511,7 @@ public class TestPotion extends TestGenerator {
             case 2: return CloakScrap.class;
             case 3: return BowFragment.class;
             case 4: return BrokenHilt.class;
+            case 5: return TornPage.class;
         }
     }
 
@@ -528,7 +533,7 @@ public class TestPotion extends TestGenerator {
             case 13: return VialOfBlood.class;
             case 14: return ShardOfOblivion.class;
             case 15: return ChaoticCenser.class;
-
+            case 16: return FerretTuft.class;
         }
     }
 
@@ -538,8 +543,8 @@ public class TestPotion extends TestGenerator {
         if(cate == 9) return 10;
         if(cate == 10) return 10;
         if(cate == 11) return 13;
-        if(cate == 12) return 4;
-        if(cate == 13) return 15;
+        if(cate == 12) return 5;
+        if(cate == 13) return 16;
         return 11;
     }
 
@@ -702,7 +707,7 @@ public class TestPotion extends TestGenerator {
         }
 
         private void layout() {
-            t_select.setPos(0, TITLE_BTM +7*GAP + 5*BTN_SIZE + 6);
+            t_select.setPos(0, TITLE_BTM +7*GAP + 5*BTN_SIZE + 6 + 18);
             o_quantity.setRect(0, t_select.bottom() + 2 * GAP, WIDTH, 24);
             c_multiply.setRect(0, o_quantity.bottom() + GAP, WIDTH/2f - GAP/2f, 16);
             b_create.setRect(WIDTH/2f + GAP/2f, o_quantity.bottom() + GAP, WIDTH/2f - GAP/2f, 16);
@@ -757,7 +762,8 @@ public class TestPotion extends TestGenerator {
             float top = TITLE_BTM + 5*GAP + 3*BTN_SIZE + 3;
             int placed = 0;
             int length = maxIndex(cateSelected)+1;
-            int firstRow = (length % 2 == 0 ? length / 2 : (length / 2 + 1));
+            int firstRow = 7;
+            int secondRow = 14;
             for (int i = 0; i < length; ++i) {
                 final int j = i;
                 IconButton btn = new IconButton() {
@@ -858,9 +864,12 @@ public class TestPotion extends TestGenerator {
                 if (i < firstRow) {
                     left = (WIDTH - BTN_SIZE * firstRow) / 2f;
                     btn.setRect(left + placed * BTN_SIZE, top, BTN_SIZE, BTN_SIZE);
-                } else {
-                    left = (WIDTH - BTN_SIZE * (length - firstRow)) / 2f;
+                } else if (i < secondRow){
+                    left = (WIDTH - BTN_SIZE * firstRow) / 2f;
                     btn.setRect(left + (placed - firstRow) * BTN_SIZE, top + GAP + BTN_SIZE, BTN_SIZE, BTN_SIZE);
+                } else {
+                    left = (WIDTH - BTN_SIZE * (length - secondRow)) / 2f;
+                    btn.setRect(left + (placed - secondRow) * BTN_SIZE, top + GAP * 2 + BTN_SIZE * 2, BTN_SIZE, BTN_SIZE);
                 }
                 add(btn);
                 placed++;

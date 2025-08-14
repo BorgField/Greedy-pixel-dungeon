@@ -23,11 +23,12 @@ import java.util.Arrays;
 public class SeedFindScene extends PixelScene {
 
     public ScrollPane list;
-    public String s;
+    public static String s;
     public static CreditsBlock txt;
     public static RenderedTextBlock r;
     public boolean stop;
     public static Thread thread;
+    public static Component content;
 
     public WndTextInput wndTextInput;
 
@@ -41,8 +42,6 @@ public class SeedFindScene extends PixelScene {
         int w = Camera.main.width;
         int h = Camera.main.height;
 
-        s = null;
-
         Archs archs = new Archs();
         archs.setSize(w, h);
         add(archs);
@@ -53,9 +52,41 @@ public class SeedFindScene extends PixelScene {
         list = new ScrollPane(new Component());
         add(list);
 
-        Component content = list.content();
-        content.clear();
 
+        ExitButton btnExit = new ExitButton() {
+            @Override
+            protected void onClick() {
+                if (thread!= null && thread.isAlive())thread.interrupt();
+                ShatteredPixelDungeon.switchNoFade(TitleScene.class);
+                System.gc();
+            }
+        };
+        btnExit.setPos(Camera.main.width - btnExit.width(), 0);
+        add(btnExit);
+
+        if (thread != null && thread.isAlive()) {
+            content = list.content();
+            content.clear();
+            txt = new CreditsBlock(true, Window.TITLE_COLOR,s);
+            txt.setRect((Camera.main.width - colWidth)/2f, 12, colWidth, 0);
+            if (!thread.isInterrupted()) {
+                content.add(txt);
+                content.setSize( fullWidth, txt.bottom()+10 );
+            }
+            if (list.isActive()) {
+                list.setRect( 0, 0, w, h );
+                list.scrollTo(0, 0);
+            }
+
+
+            r = PixelScene.renderTextBlock("abc",9);
+            r.maxWidth(w - 40);
+            r.setPos(20,20);
+            ShatteredPixelDungeon.scene().addToFront(r);
+            return;
+        }
+
+        s = null;
         ShatteredPixelDungeon.scene().addToFront( wndTextInput = new WndTextInput(Messages.get(this, "title"), Messages.get(this, "body"), Messages.get(this, "initial_value"), 1000, true, Messages.get(this, "find"), Messages.get(this, "clear")) {
             @Override
             public void onSelect(boolean positive, String text) {
@@ -75,9 +106,9 @@ public class SeedFindScene extends PixelScene {
                 }
 
 				if (positive && text != "" && floorOption) {
-                        String[] itemList = floorOption ? Arrays.copyOfRange(text.split("\n"), 1, text.split("\n").length) : text.split("\n");
+                    String[] itemList = floorOption ? Arrays.copyOfRange(text.split("\n"), 1, text.split("\n").length) : text.split("\n");
 
-                    Component content = list.content();
+                    content = list.content();
                     content.clear();
 
                     r = PixelScene.renderTextBlock("abc",9);
@@ -95,7 +126,7 @@ public class SeedFindScene extends PixelScene {
 //                    list.setRect( 0, 0, w, h );
 //                    list.scrollTo(0, 0);
 
-                        final int finalFloor = floor;
+                    final int finalFloor = floor;
                     thread = new Thread(() -> {
                         s = new SeedFinder().findSeed(itemList, finalFloor);
                         Gdx.app.postRunnable(() -> {
@@ -123,6 +154,9 @@ public class SeedFindScene extends PixelScene {
                     text = DungeonSeed.formatText(text);
                     long seed = DungeonSeed.convertFromText(text);
 
+                    content = list.content();
+                    content.clear();
+
                     RenderedTextBlock renderedTextBlock = PixelScene.renderTextBlock(new SeedFinder().logSeedItems(Long.toString(seed),26),9);
                     renderedTextBlock.setRect((Camera.main.width - colWidth)/2f, 12, colWidth, 0);
                     content.add(renderedTextBlock);
@@ -136,17 +170,6 @@ public class SeedFindScene extends PixelScene {
                 }
             }
         });
-
-        ExitButton btnExit = new ExitButton() {
-            @Override
-            protected void onClick() {
-                if (thread!= null && thread.isAlive())thread.interrupt();
-                ShatteredPixelDungeon.switchNoFade(TitleScene.class);
-                System.gc();
-            }
-        };
-        btnExit.setPos(Camera.main.width - btnExit.width(), 0);
-        add(btnExit);
 
         //fadeIn();
     }

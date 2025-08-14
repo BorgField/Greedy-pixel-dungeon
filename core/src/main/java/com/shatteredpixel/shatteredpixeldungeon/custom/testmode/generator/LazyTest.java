@@ -1,6 +1,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.StrengthSetting;
 import com.shatteredpixel.shatteredpixeldungeon.items.EnergyCrystal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Gold;
 import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
@@ -71,6 +72,8 @@ public class LazyTest extends TestGenerator {
     @Override
     public void execute(Hero hero, String action){
         if(action.equals(AC_GIVE)){
+            new StrengthSetting().identify().collect();
+
             new PotionOfExperience().quantity(100).identify().collect();
             new PotionOfFrost().quantity(100).identify().collect();
             new PotionOfHaste().quantity(100).identify().collect();
