@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2025 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,13 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
-import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.RenderedText;
 import com.watabou.noosa.ui.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class RenderedTextBlock extends Component {
 
@@ -49,27 +47,42 @@ public class RenderedTextBlock extends Component {
 	private int color = -1;
 
 	private int hightlightColor = Window.TITLE_COLOR;
-	private int redColor = Window.R_COLOR;
-	private int greenColor = Window.G_COLOR;
-	private int blueColor = Window.B_COLOR;
-	private int pinkColor = Window.Pink_COLOR;
-	private int deepColor = Window.DeepPK_COLOR;
-	private int blackColor = Window.CBLACK;
-	private int cyanColor = Window.CYAN_COLOR;
+	private int RedColor = Window.R_COLOR;
+	private int GreenColor = Window.G_COLOR;
+	private int BlueColor = Window.ORAGNECOLOR;
+	private int PinkColor = Window.Pink_COLOR;
+	private int DeepColor = Window.DeepPK_COLOR;
+	private int BLACKColor = Window.CBLACK;
+	private int CyanColor = Window.CYAN_COLOR;
 
 	private boolean highlightingEnabled = true;
-	private boolean redEnabled = true;
-	private boolean greenEnabled = true;
-	private boolean blueEnabled = true;
-	private boolean pinkEnabled = true;
-	private boolean deepEnabled = true;
-	private boolean blackEnabled = true;
-	private boolean cyanEnabled = true;
+	private boolean RedEnabled = true;
+	private boolean GreenEnabled = true;
+	private boolean BlueEnabled = true;
+	private boolean PinkEnabled = true;
+	private boolean DeepEnabled = true;
+	private boolean BlackEnabled = true;
+	private boolean CyanEnabled = true;
 
 	public static final int LEFT_ALIGN = 1;
 	public static final int CENTER_ALIGN = 2;
 	public static final int RIGHT_ALIGN = 3;
 	private int alignment = LEFT_ALIGN;
+
+	private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^<#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})>$");
+	private static final String COLOR_END_TAG = "<RGB>";
+
+	//for manual text block splitting, a space between each word is assumed
+	public void tokens(String... words){
+		StringBuilder fullText = new StringBuilder();
+		for (String word : words) {
+			fullText.append(word);
+		}
+		text = fullText.toString();
+
+		tokens = words;
+		build();
+	}
 
 	public RenderedTextBlock(int size){
 		this.size = size;
@@ -89,18 +102,6 @@ public class RenderedTextBlock extends Component {
 
 			build();
 		}
-	}
-
-	//for manual text block splitting, a space between each word is assumed
-	public void tokens(String... words){
-		StringBuilder fullText = new StringBuilder();
-		for (String word : words) {
-			fullText.append(word);
-		}
-		text = fullText.toString();
-
-		tokens = words;
-		build();
 	}
 
 	public void text(String text, int maxWidth){
@@ -129,71 +130,87 @@ public class RenderedTextBlock extends Component {
 		if (tokens == null) return;
 
 		clear();
+
+		tokens = processColorText( tokens );
 		words = new ArrayList<>();
 		boolean highlighting = false;
-		boolean redHighlighting = false;
-		boolean greenHighlighting = false;
-		boolean blueHighlighting = false;
-		boolean pinkHighlighting = false;
-		boolean deepHighlighting = false;
-		boolean blackHighlighting = false;
-		boolean cyanHighlighting = false;
+		boolean Redhighlighting = false;
+		boolean Greenhighlighting = false;
+		boolean Bluehighlighting = false;
+		boolean Pinkhighlighting = false;
+		boolean Deeppinkhighlighting = false;
+		boolean Blackhighlighting = false;
+		boolean Cyanhighlighting = false;
 
+		int currentCustomColor = -1;
 		for (String str : tokens){
-			// 处理所有颜色标记
-			if (str.equals("_") && highlightingEnabled) {
+			if ( HEX_COLOR_PATTERN.matcher( str ).matches() ) {
+				String hexColor = str.substring( 2, str.length() - 1 );
+				//如果是RGB格式则进行转换
+				if ( hexColor.length() == 3 ) {
+					// 将 #RGB 转换为 #RRGGBB
+					String r = hexColor.substring( 0, 1 );
+					String g = hexColor.substring( 1, 2 );
+					String b = hexColor.substring( 2, 3 );
+					hexColor = r + r + g + g + b + b;
+				}
+				try {
+					currentCustomColor = Integer.parseInt( hexColor, 16 );
+				} catch (NumberFormatException e) {
+					// 如果解析失败，忽略这个标记
+				}
+				continue;
+			}
+
+			// 检查颜色结束标记
+			if ( str.equals( COLOR_END_TAG ) ) {
+				currentCustomColor = -1;
+				continue;
+			}
+
+				/*
+			Ⅰ = 红色
+			Ⅱ = 绿色
+			Ⅲ = 蓝色
+			Ⅳ = 粉色
+			Ⅴ = 紫色
+			Ⅵ = 黑色
+			Ⅶ = 青色 */
+
+			if (str.equals("_") && highlightingEnabled){
 				highlighting = !highlighting;
-			} else if (str.equals("{") && redEnabled) {
-				redHighlighting = !redHighlighting;
-			} else if (str.equals("}") && greenEnabled) {
-				greenHighlighting = !greenHighlighting;
-			} else if (str.equals("**") && blueEnabled) {
-				blueHighlighting = !blueHighlighting;
-			} else if (str.equals("[") && pinkEnabled) {
-				pinkHighlighting = !pinkHighlighting;
-			} else if (str.equals("]") && deepEnabled) {
-				deepHighlighting = !deepHighlighting;
-			} else if (str.equals("|") && blackEnabled) {
-				blackHighlighting = !blackHighlighting;
-			} else if (str.equals("*") && cyanEnabled) {
-				cyanHighlighting = !cyanHighlighting;
+			} else if(str.equals("Ⅰ") && RedEnabled){
+				Redhighlighting = !Redhighlighting;
+			} else if(str.equals("Ⅱ") && GreenEnabled){
+				Greenhighlighting = !Greenhighlighting;
+			} else if(str.equals("Ⅲ") && BlueEnabled){
+				Bluehighlighting = !Bluehighlighting;
+			} else if(str.equals("Ⅳ") && PinkEnabled){
+				Pinkhighlighting = !Pinkhighlighting;
+			} else if(str.equals("Ⅴ") && DeepEnabled){
+				Deeppinkhighlighting = !Deeppinkhighlighting;
+			} else if(str.equals("Ⅵ") && BlackEnabled) {
+				Blackhighlighting = !Blackhighlighting;
+			} else if(str.equals("Ⅶ") && CyanEnabled){
+				Cyanhighlighting = !Cyanhighlighting;
 			} else if (str.equals("\n")){
 				words.add(NEWLINE);
-			} else if (str.equals(" ")){
+			} else if (str.equals(" ")) {
 				words.add(SPACE);
+
 			} else {
 				RenderedText word = new RenderedText(str, size);
 
-				/*
-			{ = 红色
-			} = 绿色
-			* = 蓝色
-			[ = 粉色
-			] = 紫色
-			| = 黑色
-			_ = 青色 */
-
-				// 应用颜色优先级
-				if (highlighting) {
-					word.hardlight(hightlightColor);
-				} else if (redHighlighting) {
-					word.hardlight(redColor);
-				} else if (greenHighlighting) {
-					word.hardlight(greenColor);
-				} else if (blueHighlighting) {
-					word.hardlight(blueColor);
-				} else if (pinkHighlighting) {
-					word.hardlight(pinkColor);
-				} else if (deepHighlighting) {
-					word.hardlight(deepColor);
-				} else if (blackHighlighting) {
-					word.hardlight(blackColor);
-				} else if (cyanHighlighting) {
-					word.hardlight(cyanColor);
-				} else if (color != -1) {
-					word.hardlight(color);
-				}
-
+				if ( currentCustomColor != -1 ) word.hardlight(currentCustomColor);
+				else if (highlighting) word.hardlight(hightlightColor);
+				else if (color != -1) word.hardlight(color);
+				else if (Redhighlighting) word.hardlight(RedColor);
+				else if (Greenhighlighting) word.hardlight(GreenColor);
+				else if (Bluehighlighting) word.hardlight(BlueColor);
+				else if (Pinkhighlighting) word.hardlight(PinkColor);
+				else if (Deeppinkhighlighting) word.hardlight(DeepColor);
+				else if (Blackhighlighting) word.hardlight(BLACKColor);
+				else if (Cyanhighlighting) word.hardlight(CyanColor);
 				word.scale.set(zoom);
 
 				words.add(word);
@@ -203,6 +220,55 @@ public class RenderedTextBlock extends Component {
 			}
 		}
 		layout();
+	}
+
+	// 处理颜色开始和结束标记
+	private synchronized String[] processColorText(String[] text){
+		ArrayList<String> newList = new ArrayList<>();
+		for ( String current : text ) {
+			// 处理颜色开始标记 <#XXXXXX> / <#XXX>
+			if ( current.contains( "<#" ) ) {
+				int start = current.indexOf( "<#" );
+				int end = current.indexOf( ">" );
+
+				// 如果找不到结束符号，直接添加整个字符串
+				if ( end == -1 || end < start ) {
+					newList.add( current );
+					continue;
+				}
+
+				if ( start > 0 ) {
+					newList.add( current.substring( 0, start ) );
+				}
+
+				newList.add( current.substring( start, end + 1 ) );
+
+				if ( end < current.length() - 1 ) {
+					newList.add( current.substring(end + 1 ) );
+				}
+
+				continue;
+			}
+
+			// 处理颜色结束标记 <RGB>
+			if (current.contains("<RGB>")) {
+				int start = current.indexOf("<RGB>");
+				int end = current.indexOf("B>");
+
+				if (start > 0) {
+					newList.add(current.substring(0, start));
+				}
+
+				newList.add(current.substring(start, end + 2));
+
+				if (end + 2 < current.length()) {
+					newList.add(current.substring(end + 2));
+				}
+				continue;
+			}
+			newList.add( current );
+		}
+		return newList.toArray( new String[ 0 ] );
 	}
 
 	public synchronized void zoom(float zoom){
@@ -245,92 +311,38 @@ public class RenderedTextBlock extends Component {
 		}
 	}
 
-	// 红色高亮设置方法
-	public synchronized void setRedHighlighting(boolean enabled) {
-		setRedHighlighting(enabled, Window.R_COLOR);
+	public synchronized void RHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.ORAGNECOLOR);
 	}
 
-	public synchronized void setRedHighlighting(boolean enabled, int color) {
-		if (enabled != redEnabled || color != redColor) {
-			redColor = color;
-			redEnabled = enabled;
+	public synchronized void RHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
 			build();
 		}
 	}
 
-	// 绿色高亮设置方法
-	public synchronized void setGreenHighlighting(boolean enabled) {
-		setGreenHighlighting(enabled, Window.G_COLOR);
+	public synchronized void GHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.G_COLOR);
 	}
 
-	public synchronized void setGreenHighlighting(boolean enabled, int color) {
-		if (enabled != greenEnabled || color != greenColor) {
-			greenColor = color;
-			greenEnabled = enabled;
+	public synchronized void GHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
 			build();
 		}
 	}
 
-	// 蓝色高亮设置方法
-	public synchronized void setBlueHighlighting(boolean enabled) {
-		setBlueHighlighting(enabled, Window.B_COLOR);
+	public synchronized void BHightlighting(boolean enabled){
+		setHightlighting(enabled, Window.G_COLOR);
 	}
 
-	public synchronized void setBlueHighlighting(boolean enabled, int color) {
-		if (enabled != blueEnabled || color != blueColor) {
-			blueColor = color;
-			blueEnabled = enabled;
-			build();
-		}
-	}
-
-	// 粉色高亮设置方法
-	public synchronized void setPinkHighlighting(boolean enabled) {
-		setPinkHighlighting(enabled, Window.Pink_COLOR);
-	}
-
-	public synchronized void setPinkHighlighting(boolean enabled, int color) {
-		if (enabled != pinkEnabled || color != pinkColor) {
-			pinkColor = color;
-			pinkEnabled = enabled;
-			build();
-		}
-	}
-
-	// 紫色高亮设置方法
-	public synchronized void setDeepHighlighting(boolean enabled) {
-		setDeepHighlighting(enabled, Window.DeepPK_COLOR);
-	}
-
-	public synchronized void setDeepHighlighting(boolean enabled, int color) {
-		if (enabled != deepEnabled || color != deepColor) {
-			deepColor = color;
-			deepEnabled = enabled;
-			build();
-		}
-	}
-
-	// 黑色高亮设置方法
-	public synchronized void setBlackHighlighting(boolean enabled) {
-		setBlackHighlighting(enabled, Window.CBLACK);
-	}
-
-	public synchronized void setBlackHighlighting(boolean enabled, int color) {
-		if (enabled != blackEnabled || color != blackColor) {
-			blackColor = color;
-			blackEnabled = enabled;
-			build();
-		}
-	}
-
-	public synchronized void setCyanHighlighting(boolean enabled) {
-		setCyanHighlighting(enabled, Window.CYAN_COLOR);
-	}
-
-	public synchronized void setCyanHighlighting(boolean enabled, int color) {
-		if (enabled != cyanEnabled || color != cyanColor) {
-			cyanColor = color;
-			cyanEnabled = enabled;
+	public synchronized void BHightlighting(boolean enabled, int color){
+		if (enabled != highlightingEnabled || color != hightlightColor) {
+			RedColor = color;
+			RedEnabled = enabled;
 			build();
 		}
 	}
@@ -368,10 +380,9 @@ public class RenderedTextBlock extends Component {
 		lines.add(curLine);
 
 		width = 0;
-		for (int i = 0; i < words.size(); i++){
-			RenderedText word = words.get(i);
+		for (RenderedText word : words){
 			if (word == SPACE){
-				x += 1.667f;
+				x += 1.5f;
 			} else if (word == NEWLINE) {
 				//newline
 				y += height+2f;
@@ -382,19 +393,7 @@ public class RenderedTextBlock extends Component {
 			} else {
 				if (word.height() > height) height = word.height();
 
-				float fullWidth = word.width();
-				int j = i+1;
-
-				//this is so that words split only by highlighting are still grouped in layout
-				//Chinese/Japanese always render every character separately without spaces however
-				while (Messages.lang() != Languages.CHI_SMPL && Messages.lang() != Languages.CHI_TRAD
-						&& Messages.lang() != Languages.JAPANESE
-						&& j < words.size() && words.get(j) != SPACE && words.get(j) != NEWLINE){
-					fullWidth += words.get(j).width() - 0.667f;
-					j++;
-				}
-
-				if ((x - this.x) + fullWidth - 0.001f > maxWidth && !curLine.isEmpty()){
+				if ((x - this.x) + word.width() > maxWidth && !curLine.isEmpty()){
 					y += height+2f;
 					x = this.x;
 					nLines++;
@@ -410,9 +409,9 @@ public class RenderedTextBlock extends Component {
 
 				if ((x - this.x) > width) width = (x - this.x);
 
-				//Note that spacing currently doesn't factor in halfwidth and fullwidth characters
+				//TODO spacing currently doesn't factor in halfwidth and fullwidth characters
 				//(e.g. Ideographic full stop)
-				x -= 0.667f;
+				x -= 0.5f;
 
 			}
 		}
@@ -435,5 +434,8 @@ public class RenderedTextBlock extends Component {
 				}
 			}
 		}
+	}
+
+	protected void hardlight(float r, float g, float b) {
 	}
 }
