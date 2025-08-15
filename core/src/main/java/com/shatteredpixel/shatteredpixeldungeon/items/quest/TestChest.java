@@ -12,6 +12,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Stylus;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.LeatherArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.WheelChair;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.Food;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -22,6 +23,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.CausticBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.InfernalBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.brews.ShockingBrew;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfMastery;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfBlank;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
@@ -122,9 +124,10 @@ public class TestChest extends Item {
 //        //饥饿碎片
 //        items.add(new ShardOfHunger().quantity(1));
         items.add(new TendonHookSickle().quantity(1).identify());
-        items.add(new ScrollOfUpgrade().quantity(50).identify());
-        items.add(new PotionOfStrength().quantity(30).identify());
-        items.add(new PotionOfMastery().quantity(20).identify());
+        items.add(new ScrollOfUpgrade().quantity(0).identify());
+        items.add(new ScrollOfBlank().quantity(20).identify());
+        items.add(new PotionOfStrength().quantity(0).identify());
+        items.add(new WheelChair().quantity(1).identify());
 
         return items;
     }

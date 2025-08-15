@@ -768,25 +768,25 @@ public class WndSettings extends WndTabbed {
 
 		@Override
 		protected void layout() {
-			float GAP = 2;
+//			float GAP = 2;
 			float bottom = y + GAP;
 
 			title.setPos((width - title.width()) / 2, bottom);
-			bottom += title.height() + GAP;
+			bottom += title.bottom() + 2;
 
 			sep1.size(width, 1);
 			sep1.y = bottom;
-			bottom += sep1.height() + GAP;
+			bottom += sep1.height() + 2*GAP;
 
 			if (width > 200) {
 				ClassUI.setRect(0, bottom, width / 2 - 1, BTN_HEIGHT);
 				ItemsUI.setRect(width / 2 + 1, bottom, width / 2 - 1, SLIDER_HEIGHT);
-				bottom += ItemsUI.height() + GAP;
+				bottom += ItemsUI.height() + 2*GAP;
 			} else {
 				ClassUI.setRect(0, bottom, width, BTN_HEIGHT);
-				bottom += ClassUI.height() + GAP;
+				bottom += ClassUI.height() + 2*GAP;
 				ItemsUI.setRect(0, bottom, width, SLIDER_HEIGHT);
-				bottom += ItemsUI.height() + GAP;
+				bottom += ItemsUI.height() + 2*GAP;
 			}
 
 			height = bottom;
