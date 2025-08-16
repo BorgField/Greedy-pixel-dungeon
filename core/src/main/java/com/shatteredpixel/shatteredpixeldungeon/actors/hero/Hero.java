@@ -140,6 +140,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeroLongSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
@@ -1826,8 +1827,8 @@ public class Hero extends Char {
 				Buff.affect(this, Momentum.class).gainStack();
 			}
 
-			if (buff(WheelChair.DistanceStacks.class) != null) {
-				buff(WheelChair.DistanceStacks.class).gainStack();
+			if (buff(WheelChair.wheelRecharge.class) != null) {
+				buff(WheelChair.wheelRecharge.class).gainStack();
 			}
 			
 			sprite.move(pos, step);
@@ -2032,6 +2033,11 @@ public class Hero extends Char {
 			Item.updateQuickslot();
 			
 			Badges.validateLevelReached();
+		}
+
+		if (belongings.weapon() instanceof HeroLongSword) {
+			HeroLongSword longsword = (HeroLongSword) belongings.weapon();
+			longsword.gainExp(exp);
 		}
 	}
 	

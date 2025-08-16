@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.Alchemize;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAugmentation;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeroLongSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TendonHookSickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -114,8 +115,8 @@ public class TestChest extends Item {
     private ArrayList<Item> convert() {
         ArrayList<Item> items = new ArrayList<>();
 
-//        //英雄长剑
-//        items.add(new HeroLongSword().identify());
+        //英雄长剑
+        items.add(new HeroLongSword().identify());
 //        //猫人饼干
 //        items.add(new CatCookie().quantity(10));
 //        //魔绫随机物资箱子

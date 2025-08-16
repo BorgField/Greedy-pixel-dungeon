@@ -8,20 +8,14 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.HeroicLeap;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.TendonHookSickle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -29,12 +23,11 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -47,7 +40,7 @@ public class WheelChair extends Artifact {
     {
         image = ItemSpriteSheet.ROUND_SHIELD;
 
-        levelCap = 5;
+        levelCap = 10;
         exp = 0;
 
         charge = 3;
@@ -118,6 +111,13 @@ public class WheelChair extends Artifact {
                     return;
                 }
 
+                int distance = Dungeon.level.distance(curUser.pos, target);
+                // 检查距离是否超过6
+                if (distance > 2+0.2*level()) {
+                    GLog.w(Messages.get(TendonHookSickle.class, "out_of_range"));
+                    return;
+                }
+
                 final Ballistica chain = new Ballistica(hero.pos, target, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
 
                 int cell = chain.collisionPos;
@@ -130,6 +130,7 @@ public class WheelChair extends Artifact {
 
                 final int dest = cell;
                 hero.busy();
+                charge--;
                 hero.sprite.jump(hero.pos, cell, new Callback() {
                     @Override
                     public void call() {
@@ -141,6 +142,7 @@ public class WheelChair extends Artifact {
                         WandOfBlastWave.BlastWave.blast(dest);
                         PixelScene.shake(2, 0.5f);
 
+                        Buff.prolong( hero, Haste.class, (10+level()));
                         Invisibility.dispel();
                         hero.spendAndNext(Actor.TICK);
                     }
@@ -153,11 +155,9 @@ public class WheelChair extends Artifact {
 
         @Override
         public String prompt() {
-            return Messages.get(EtherealChains.class, "prompt");
+            return Messages.get( WheelChair.class, "prompt");
         }
     };
-
-
 
     @Override
     protected Artifact.ArtifactBuff passiveBuff() {
@@ -187,24 +187,23 @@ public class WheelChair extends Artifact {
             if (cursed)
                 desc += Messages.get(this, "desc_cursed");
             else
-                desc += Messages.get(this, "desc_equipped");
+                desc += Messages.get(this, "desc_equipped", exp, (1000+level()*100));
         }
         return desc;
     }
-
-    private static int DistanceStacks = 0;
-    private static boolean movedLastTurn = true;
+    private boolean movedLastTurn = true;
 
     public class wheelRecharge extends Artifact.ArtifactBuff {
         @Override
         public boolean act() {
-            int chargeTarget = 5+(level()*2);
+            int chargeTarget = Math.min( 3 + level(), 10);
             if (charge < chargeTarget
                     && !cursed
                     && target.buff(MagicImmune.class) == null
                     && Regeneration.regenOn()) {
                 //gains a charge in 40 - 2*missingCharge turns
-                float chargeGain = (1 / (40f - (chargeTarget - charge)*2f));
+                //80-charge*2-level
+                float chargeGain = (1 / (80f- level()- charge*2f));
                 chargeGain *= RingOfEnergy.artifactChargeMultiplier(target);
                 partialCharge += chargeGain;
             } else if (cursed && Random.Int(100) == 0){
@@ -215,42 +214,31 @@ public class WheelChair extends Artifact {
                 partialCharge --;
                 charge ++;
             }
-
-            Buff.affect(hero, DistanceStacks.class);
             // 重置移动标志
             movedLastTurn = false;
+
             updateQuickslot();
             spend( TICK );
             return true;
         }
 
-        public void gainExp( float levelPortion ) {
-            if (cursed || target.buff(MagicImmune.class) != null || levelPortion == 0) return;
-
-            exp += Math.round(levelPortion*100);
-
-            //past the soft charge cap, gaining  charge from leveling is slowed.
-            if (charge > 5+(level()*2)){
-                levelPortion *= (5+((float)level()*2))/charge;
-            }
-            partialCharge += levelPortion*6f;
-
-            if (exp > 100+level()*100 && level() < levelCap){
-                exp -= 100+level()*100;
-                GLog.p( Messages.get(this, "levelup") );
-                Catalog.countUses(EtherealChains.class, 2);
-                upgrade();
-            }
-
-        }
-    }
-    public static class DistanceStacks extends FlavourBuff {
         public void gainStack(){
+            if (cursed || target.buff(MagicImmune.class) != null) return;
             movedLastTurn = true;
 //            postpone(target.cooldown()+(1/target.speed()));
-            DistanceStacks = DistanceStacks +1;
-//            ActionIndicator.setAction(this);
+            exp = exp +1;
+
+            if (exp > 1000+level()*100 && level() < levelCap){
+                exp -= 1000+level()*100;
+                GLog.p( Messages.get(WheelChair.class, "levelup") );
+//                Catalog.countUses(WheelChair.class, 2);
+                upgrade();
+                updateQuickslot();
+            }
+
             BuffIndicator.refreshHero();
         }
     }
+
+
 }
