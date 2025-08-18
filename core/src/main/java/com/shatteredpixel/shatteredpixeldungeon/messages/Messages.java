@@ -75,7 +75,6 @@ public class Messages {
 			Assets.Messages.WINDOWS,
 
 			Assets.Messages.CUSTOM,
-			Assets.Messages.TEXT
 	};
 
 	static{
