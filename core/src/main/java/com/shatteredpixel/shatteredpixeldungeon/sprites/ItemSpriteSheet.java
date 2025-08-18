@@ -964,8 +964,36 @@ public class ItemSpriteSheet {
 			assignIconRect( POTION_DIVINE,      7, 7 );
 		}
 
-		                                                                                //16 free slots
+
+		private static final int MINI_POTIONS =                            xy(1, 7);  //16 slots
+		public static final int POTION_BURST      = MINI_POTIONS + 0;
+		public static final int POTION_FIRSTAID   = MINI_POTIONS + 1;
+		public static final int POTION_PHANTOM    = MINI_POTIONS + 2;
+		public static final int POTION_FROZEN     = MINI_POTIONS + 3;
+		public static final int POTION_BURNING    = MINI_POTIONS + 4;
+		public static final int POTION_VENOM      = MINI_POTIONS + 5;
+		public static final int POTION_SWIFT      = MINI_POTIONS + 6;
+		public static final int POTION_MIMICRY    = MINI_POTIONS + 7;
+		public static final int POTION_PRANCE     = MINI_POTIONS + 8;
+		public static final int POTION_WITHSTAND  = MINI_POTIONS + 9;
+		public static final int POTION_DISPELLING = MINI_POTIONS + 10;
+		public static final int POTION_EPIPHANY   = MINI_POTIONS + 11;
+
+		static {
+			assignIconRect( POTION_BURST,     7, 7 );
+			assignIconRect( POTION_FIRSTAID,  7, 7 );
+			assignIconRect( POTION_PHANTOM,   7, 7 );
+			assignIconRect( POTION_FROZEN,    7, 7 );
+			assignIconRect( POTION_BURNING,   7, 7 );
+			assignIconRect( POTION_VENOM,     7, 7 );
+			assignIconRect( POTION_SWIFT,     7, 7 );
+			assignIconRect( POTION_MIMICRY,   7, 7 );
+			assignIconRect( POTION_PRANCE,    7, 7 );
+			assignIconRect( POTION_WITHSTAND, 7, 7 );
+			assignIconRect( POTION_DISPELLING,7, 7 );
+			assignIconRect( POTION_EPIPHANY,  7, 7 );
+		}
 
 	}
-
 }
+

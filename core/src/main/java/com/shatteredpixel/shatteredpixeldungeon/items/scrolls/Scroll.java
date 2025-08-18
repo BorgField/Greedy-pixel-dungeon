@@ -476,14 +476,16 @@ public abstract class Scroll extends Item {
 			// 2. 创建预览实例（不修改原物品）
 			Scroll sample;
 			try {
-				sample = original.getClass().newInstance();
+				sample = (Scroll) Reflection.newInstance(original.getClass());
 			} catch (Exception e) {
+				ShatteredPixelDungeon.reportException(e);
 				return null;
 			}
 			sample.quantity(2);
 			sample.setCopy(true);
 			return sample;
 		}
+
 	}
 
 	private static final String COPY = "copyScroll";

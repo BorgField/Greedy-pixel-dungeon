@@ -27,9 +27,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.custom.messages.M;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.text.HeroStat;
-import com.shatteredpixel.shatteredpixeldungeon.text.TextChallenges;
-import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CheckBox;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
@@ -130,7 +127,7 @@ public class WndChallenges extends WndTabbed {
 			super();
 			createChildren();
 			// 标题和普通挑战布局（同原WndChallenges）
-			RenderedTextBlock title = PixelScene.renderTextBlock( M.L(TextChallenges.class, "traditional"), 11 );
+			RenderedTextBlock title = PixelScene.renderTextBlock( M.L(Challenges.class, "traditional"), 11 );
 			title.hardlight( TITLE_COLOR );
 			title.setPos(
 					(WIDTH - title.width()) / 2,
@@ -211,7 +208,7 @@ public class WndChallenges extends WndTabbed {
 			super();
 			createChildren();
 			// 标题和普通挑战布局（同原WndChallenges）
-			RenderedTextBlock title = PixelScene.renderTextBlock( M.L(TextChallenges.class, "expansion"), 11 );
+			RenderedTextBlock title = PixelScene.renderTextBlock( M.L(Challenges.class, "expansion"), 11 );
 			title.hardlight( TITLE_COLOR );
 			title.setPos(
 					(WIDTH - title.width()) / 2,
@@ -225,7 +222,7 @@ public class WndChallenges extends WndTabbed {
 
 				final String challenge = Challenges.NAME_IDS[i];
 
-				CanScrollCheckBox cb = new CanScrollCheckBox( Messages.titleCase(Messages.get(TextChallenges.class, challenge)) );
+				CanScrollCheckBox cb = new CanScrollCheckBox( Messages.titleCase(Messages.get(Challenges.class, challenge)) );
 				cb.checked( (checked & Challenges.MASKS[i]) != 0 );
 				cb.active = WndChallenges.this.editable;
 
@@ -242,7 +239,7 @@ public class WndChallenges extends WndTabbed {
 					protected void onClick() {
 						super.onClick();
 						ShatteredPixelDungeon.scene().add(
-								new WndMessage(Messages.get(TextChallenges.class, challenge+"_desc"))
+								new WndMessage(Messages.get(Challenges.class, challenge+"_desc"))
 						);
 					}
 				};
