@@ -624,7 +624,7 @@ public class ItemSpriteSheet {
 	public static final int SEED_ICECAP         = SEEDS+4;
 	public static final int SEED_STORMVINE      = SEEDS+5;
 	public static final int SEED_SORROWMOSS     = SEEDS+6;
-	public static final int SEED_MAGEROYAL = SEEDS+7;
+	public static final int SEED_MAGEROYAL      = SEEDS+7;
 	public static final int SEED_EARTHROOT      = SEEDS+8;
 	public static final int SEED_STARFLOWER     = SEEDS+9;
 	public static final int SEED_FADELEAF       = SEEDS+10;
@@ -633,8 +633,26 @@ public class ItemSpriteSheet {
 		for (int i = SEEDS; i < SEEDS+16; i++)
 			assignItemRect(i, 10, 10);
 	}
+
+	private static final int MINI_POTIONS =                               xy(1, 25);  //16 slots
+	public static final int MINI_CRIMSON  = MINI_POTIONS+0;
+	public static final int MINI_AMBER    = MINI_POTIONS+1;
+	public static final int MINI_GOLDEN   = MINI_POTIONS+2;
+	public static final int MINI_JADE     = MINI_POTIONS+3;
+	public static final int MINI_TURQUOISE= MINI_POTIONS+4;
+	public static final int MINI_AZURE    = MINI_POTIONS+5;
+	public static final int MINI_INDIGO   = MINI_POTIONS+6;
+	public static final int MINI_MAGENTA  = MINI_POTIONS+7;
+	public static final int MINI_BISTRE   = MINI_POTIONS+8;
+	public static final int MINI_CHARCOAL = MINI_POTIONS+9;
+	public static final int MINI_SILVER   = MINI_POTIONS+10;
+	public static final int MINI_IVORY    = EXOTIC_POTIONS+11;
+	static {
+		for (int i = MINI_POTIONS; i < MINI_POTIONS+16; i++)
+			assignItemRect(i, 12, 12);
+	}
 	
-	private static final int BREWS          =                               xy(1, 25);  //8 slots
+	private static final int BREWS          =                               xy(1, 26);  //8 slots
 	public static final int BREW_INFERNAL   = BREWS+0;
 	public static final int BREW_BLIZZARD   = BREWS+1;
 	public static final int BREW_SHOCKING   = BREWS+2;
@@ -965,7 +983,7 @@ public class ItemSpriteSheet {
 		}
 
 
-		private static final int MINI_POTIONS =                            xy(1, 7);  //16 slots
+		private static final int MINI_POTIONS =                            xy(1, 5);  //16 slots
 		public static final int POTION_BURST      = MINI_POTIONS + 0;
 		public static final int POTION_FIRSTAID   = MINI_POTIONS + 1;
 		public static final int POTION_PHANTOM    = MINI_POTIONS + 2;

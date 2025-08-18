@@ -43,38 +43,38 @@ public class MiniPotion extends Potion {
         regToMini.put(PotionOfStrength.class, PotionOfBurst.class);
         miniToReg.put(PotionOfBurst.class, PotionOfStrength.class);
 
-//        regToMini.put(PotionOfHealing.class, PotionOfShielding.class);
-//        miniToReg.put(PotionOfShielding.class, PotionOfHealing.class);
-//
-//        regToMini.put(PotionOfMindVision.class, PotionOfMagicalSight.class);
-//        miniToReg.put(PotionOfMagicalSight.class, PotionOfMindVision.class);
-//
-//        regToMini.put(PotionOfFrost.class, PotionOfSnapFreeze.class);
-//        miniToReg.put(PotionOfSnapFreeze.class, PotionOfFrost.class);
-//
-//        regToMini.put(PotionOfLiquidFlame.class, PotionOfDragonsBreath.class);
-//        miniToReg.put(PotionOfDragonsBreath.class, PotionOfLiquidFlame.class);
-//
-//        regToMini.put(PotionOfToxicGas.class, PotionOfCorrosiveGas.class);
-//        miniToReg.put(PotionOfCorrosiveGas.class, PotionOfToxicGas.class);
-//
-//        regToMini.put(PotionOfHaste.class, PotionOfStamina.class);
-//        miniToReg.put(PotionOfStamina.class, PotionOfHaste.class);
-//
-//        regToMini.put(PotionOfInvisibility.class, PotionOfShroudingFog.class);
-//        miniToReg.put(PotionOfShroudingFog.class, PotionOfInvisibility.class);
-//
-//        regToMini.put(PotionOfLevitation.class, PotionOfStormClouds.class);
-//        miniToReg.put(PotionOfStormClouds.class, PotionOfLevitation.class);
-//
-//        regToMini.put(PotionOfParalyticGas.class, PotionOfEarthenArmor.class);
-//        miniToReg.put(PotionOfEarthenArmor.class, PotionOfParalyticGas.class);
-//
-//        regToMini.put(PotionOfPurity.class, PotionOfCleansing.class);
-//        miniToReg.put(PotionOfCleansing.class, PotionOfPurity.class);
-//
-//        regToMini.put(PotionOfExperience.class, PotionOfDivineInspiration.class);
-//        miniToReg.put(PotionOfDivineInspiration.class, PotionOfExperience.class);
+        regToMini.put(PotionOfExperience.class, PotionOfEpiphany.class);
+        miniToReg.put(PotionOfEpiphany.class, PotionOfExperience.class);
+
+        regToMini.put(PotionOfFrost.class, PotionOfFrozen.class);
+        miniToReg.put(PotionOfFrozen.class, PotionOfFrost.class);
+
+        regToMini.put(PotionOfHaste.class, PotionOfSwift.class);
+        miniToReg.put(PotionOfSwift.class, PotionOfHaste.class);
+
+        regToMini.put(PotionOfHealing.class, PotionOfFirstAid.class);
+        miniToReg.put(PotionOfFirstAid.class, PotionOfHealing.class);
+
+        regToMini.put(PotionOfInvisibility.class, PotionOfMimicry.class);
+        miniToReg.put(PotionOfMimicry.class, PotionOfInvisibility.class);
+
+        regToMini.put(PotionOfLevitation.class, PotionOfPrance.class);
+        miniToReg.put(PotionOfPrance.class, PotionOfLevitation.class);
+
+        regToMini.put(PotionOfLiquidFlame.class, PotionOfBurning.class);
+        miniToReg.put(PotionOfBurning.class, PotionOfLiquidFlame.class);
+
+        regToMini.put(PotionOfMindVision.class, PotionOfPhantom.class);
+        miniToReg.put(PotionOfPhantom.class, PotionOfMindVision.class);
+
+        regToMini.put(PotionOfParalyticGas.class, PotionOfWithstand.class);
+        miniToReg.put(PotionOfWithstand.class, PotionOfParalyticGas.class);
+
+        regToMini.put(PotionOfPurity.class, PotionOfDispelling.class);
+        miniToReg.put(PotionOfDispelling.class, PotionOfPurity.class);
+
+        regToMini.put(PotionOfToxicGas.class, PotionOfVenom.class);
+        miniToReg.put(PotionOfVenom.class, PotionOfToxicGas.class);
 
     }
 
@@ -101,13 +101,11 @@ public class MiniPotion extends Potion {
     }
 
     @Override
-    // 迷你药水价值为普通药水的80%
     public int value() {
         return (int)(Reflection.newInstance(miniToReg.get(getClass())).value() * 0.5f);
     }
 
     @Override
-    // 迷你药水能量值为普通药水的80%
     public int energyVal() {
         return (int)(Reflection.newInstance(miniToReg.get(getClass())).energyVal() * 0.5f);
     }
@@ -137,7 +135,7 @@ public class MiniPotion extends Potion {
 
             // 生成2个单位的迷你药水
             MiniPotion mini = (MiniPotion)Reflection.newInstance(regToMini.get(ingredient.getClass()));
-            mini.quantity(2);
+            if (mini != null) { mini.quantity(2);}
             return mini;
         }
 
@@ -145,7 +143,7 @@ public class MiniPotion extends Potion {
         public Item sampleOutput(ArrayList<Item> ingredients) {
             // 返回2个单位的迷你药水
             MiniPotion mini = (MiniPotion)Reflection.newInstance(regToMini.get(ingredients.get(0).getClass()));
-            mini.quantity(2);
+            if (mini != null) { mini.quantity(2);}
             return mini;
         }
     }
