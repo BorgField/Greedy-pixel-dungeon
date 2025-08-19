@@ -65,6 +65,18 @@ public class TendonHookSickle extends MeleeWeapon {
         return hero != null ? Math.max(0, hero.STR() - STRReq()) : 0;
     }
 
+    public boolean getPotionsSTR() {
+        return potionsSTR;
+    }
+
+    public void setPotionsSTR() {
+        if( !(Dungeon.hero ==null) &&  isEquipped(hero) ) {
+            if (!potionsSTR && masteryPotionBonus) {
+                potionsSTR = true;
+            }
+        }
+    }
+
     public float extraDLY() {
         int i = extraSTR();
         return Math.max(0.5f, 1.5f - i * 0.1f);
@@ -121,12 +133,7 @@ public class TendonHookSickle extends MeleeWeapon {
             applyEquipDamage(hero);
             ActionIndicator.refresh();
             DLY = extraDLY();
-            if( !(Dungeon.hero ==null) && masteryPotionBonus ) {
-                if (!potionsSTR && isEquipped(hero)) {
-                    hero.STR++;
-                    potionsSTR = true;
-                }
-            }
+            setPotionsSTR();
             return true;
         }
         return false;
@@ -145,12 +152,7 @@ public class TendonHookSickle extends MeleeWeapon {
             applyEquipDamage(hero);
             ActionIndicator.refresh();
             DLY = extraDLY();
-            if( !(Dungeon.hero ==null) && masteryPotionBonus ) {
-                if ( potionsSTR && !isEquipped(hero)) {
-                    hero.STR--;
-                    potionsSTR = false;
-                }
-            }
+            setPotionsSTR();
             return true;
         }
         return false;
