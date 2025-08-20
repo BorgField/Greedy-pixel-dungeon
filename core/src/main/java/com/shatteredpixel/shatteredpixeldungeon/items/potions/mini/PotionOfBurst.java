@@ -53,12 +53,12 @@ public class PotionOfBurst extends MiniPotion {
             return Messages.get(this, "desc", dispTurns(visualcooldown()));
         }
 
-    @Override
-    public void detach() {
-        super.detach();
-        Buff.affect(hero, Weakness.class, 20f);
-        BuffIndicator.refreshHero();
-    }
+        @Override
+        public void detach() {
+            super.detach();
+            Buff.affect(hero, Weakness.class, 20f);
+            BuffIndicator.refreshHero();
+        }
 
     }
 }
