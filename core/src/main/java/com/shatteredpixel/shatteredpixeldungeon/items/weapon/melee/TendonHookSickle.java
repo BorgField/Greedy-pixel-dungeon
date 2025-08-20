@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
@@ -181,7 +182,7 @@ public class TendonHookSickle extends MeleeWeapon {
                 // 确保至少造成1点伤害
                 if (extraDmg < 1) extraDmg = 1;
                 // 对defender施加额外伤害
-                defender.damage( extraDmg, hero );
+                defender.damage( extraDmg, Bleeding.class);
                 // 添加视觉效果
                 if (defender.sprite.visible) {
                     Splash.at(defender.sprite.center(), PointF.PI, PointF.PI / 4,
