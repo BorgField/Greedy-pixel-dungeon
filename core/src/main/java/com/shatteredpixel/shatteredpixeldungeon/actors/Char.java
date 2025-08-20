@@ -113,6 +113,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.mini.PotionOfBurst;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -475,6 +476,10 @@ public abstract class Char extends Actor {
 
 			if ( buff(Weakness.class) != null ){
 				dmg *= 0.67f;
+			}
+
+			if (Dungeon.hero.buff(PotionOfBurst.Burst.class) != null){
+				dmg *= 1.3f;
 			}
 
 			//characters influenced by aggression deal 1/2 damage to bosses
