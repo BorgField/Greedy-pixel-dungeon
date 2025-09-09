@@ -134,6 +134,7 @@ import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
 import com.watabou.noosa.SkinnedBlock;
 import com.watabou.noosa.Visual;
+import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.Tweener;
@@ -152,7 +153,7 @@ import java.util.Locale;
 
 public class GameScene extends PixelScene {
 
-	static GameScene scene;
+	public static GameScene scene;
 
 	private SkinnedBlock water;
 	private DungeonTerrainTilemap tiles;

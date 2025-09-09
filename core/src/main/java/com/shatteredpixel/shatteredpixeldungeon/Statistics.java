@@ -116,6 +116,8 @@ public class Statistics {
 		amuletObtained = false;
 		gameWon = false;
 		ascended = false;
+
+		resetCustom();
 		
 	}
 	
@@ -204,6 +206,8 @@ public class Statistics {
 		bundle.put( AMULET,		amuletObtained );
 		bundle.put( WON,        gameWon );
 		bundle.put( ASCENDED,   ascended );
+
+		storeCustom(bundle);
 	}
 	
 	public static void restoreFromBundle( Bundle bundle ) {
@@ -264,6 +268,8 @@ public class Statistics {
 		amuletObtained	= bundle.getBoolean( AMULET );
 		gameWon         = bundle.getBoolean( WON );
 		ascended        = bundle.getBoolean( ASCENDED );
+
+		restoreCustom(bundle);
 	}
 	
 	public static void preview( GamesInProgress.Info info, Bundle bundle ){

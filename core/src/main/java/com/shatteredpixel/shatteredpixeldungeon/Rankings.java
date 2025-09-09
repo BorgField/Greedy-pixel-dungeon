@@ -80,6 +80,10 @@ public enum Rankings {
 
 	public void submit( boolean win, Object cause ) {
 
+		if(Dungeon.isChallenged(Challenges.TEST_MODE)){
+			return;
+		}
+
 		load();
 		
 		Record rec = new Record();
