@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2025 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,18 +24,18 @@ package com.shatteredpixel.shatteredpixeldungeon.messages;
 import java.util.Locale;
 
 public enum Languages {
-	ENGLISH("english",      "en", Status.O_COMPLETE, null, null),
-	CHI_SMPL("简体中文",     "zh", Status.__UNREVIEW, new String[]{"Chronie_Lynn_Iwa", "Jinkeloid(zdx00793)", "endlesssolitude"}, new String[]{"931451545", "Budding", "Fatir", "Fishbone", "Hcat", "HoofBumpBlurryface", "Horr_lski", "Lery", "Lyn_0401", "Lyx0527", "Ooooscar", "RainSlide", "ShatteredFlameBlast", "SpaceAnchor", "SunsetGlowTheDOGE", "Teller", "hmdzl001", "leo", "tempest102", "户方狸奴"}),
-	KOREAN("한국어",         "ko", Status.__UNREVIEW, new String[]{"Cocoa", "Flameblast12", "GameConqueror", "Korean2017"}, new String[]{"AFS", "N8fall", "WondarRabb1t", "benepaper", "chlrhwnstkd", "ddojin0115", "eeeei", "enjuxx", "hancyel", "linterpreteur", "lemonam", "lsiebnie", "sora0430"}),
-	JAPANESE("日本語",       "ja", Status.O_COMPLETE, new String[]{"daingewuvzeevisiddfddd", "oz51199"}, new String[]{"Gosamaru", "NickZhrbin", "Otogiri", "Siraore_Rou", "amama", "grassedge", "kiyofumimanabe", "librada", "mocklike", "tomofumikitano"}),
-	;
-
+	ENGLISH("english",      "",   Status.REVIEWED,   null, null),
+	CHINESE("中文",          "zh", Status.UNREVIEWED, new String[]{"Jinkeloid(zdx00793)", "endlesssolitude"}, new String[]{"931451545", "Chronie_Lynn_Iwa", "Fatir", "Fishbone", "Hcat", "HoofBumpBlurryface", "Lery", "Lyn_0401", "Ooooscar", "ShatteredFlameBlast", "SpaceAnchor", "hmdzl001", "leo", "tempest102"});
 
 	public enum Status{
-		//below 80% translated languages are not added or removed
 		X_UNFINISH, //unfinished, ~80-99% translated
 		__UNREVIEW, //unreviewed, but 100% translated
 		O_COMPLETE, //complete, 100% reviewed
+		//below 80% complete languages are not added.
+		INCOMPLETE, //80-99% complete
+		UNREVIEWED, //100% complete
+		REVIEWED    //100% reviewed
+
 	}
 
 	private String name;

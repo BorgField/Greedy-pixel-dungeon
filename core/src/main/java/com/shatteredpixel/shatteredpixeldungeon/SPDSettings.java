@@ -215,8 +215,7 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean systemFont(){
 		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.CHI_SMPL || language() == Languages.CHI_TRAD
-						|| language() == Languages.KOREAN || language() == Languages.JAPANESE));
+				(language() == Languages.CHINESE ));
 	}
 
 	public static void vibration(boolean value){
@@ -499,7 +498,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean ClassUI() {
-		return getBoolean(KEY_DARK, false);
+		return getBoolean(KEY_DARK, true);
 	}
 
 	public static void ItemsUI( int value ) {

@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Imp;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Wandmaker;
+import com.shatteredpixel.shatteredpixeldungeon.custom.buffs.AbsoluteBlindness;
 import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
@@ -172,7 +173,6 @@ public class Dungeon {
 				} else {
 					lim.count = 0;
 				}
-				
 			}
 		}
 
@@ -500,6 +500,10 @@ public class Dungeon {
 		
 		hero.curAction = hero.lastAction = null;
 
+		if (hero.buff(AbsoluteBlindness.class) != null) {
+			hero.viewDistance = 0;
+		}
+
 		observe();
 		try {
 			saveAll();
@@ -680,7 +684,7 @@ public class Dungeon {
 			Bundle badges = new Bundle();
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
-			
+
 			FileUtils.bundleToFile( GamesInProgress.gameFile(save), bundle);
 			
 		} catch (IOException e) {
