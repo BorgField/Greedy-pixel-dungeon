@@ -81,10 +81,10 @@ public class InventoryPane extends Component {
 	private ArrayList<BagButton> bags;
 
 	public static final int WIDTH = 187;
-	public static final int HEIGHT = 98;
+	public static final int HEIGHT = 102;
 
 	private static final int SLOT_WIDTH = 17;
-	private static final int SLOT_HEIGHT = 22;
+	private static final int SLOT_HEIGHT = 23;
 
 	private WndBag.ItemSelector selector;
 
