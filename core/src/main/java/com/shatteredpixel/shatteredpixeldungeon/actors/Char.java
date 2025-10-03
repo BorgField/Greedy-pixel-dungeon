@@ -100,6 +100,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
+import com.shatteredpixel.shatteredpixeldungeon.custom.buffs.modifier.CombatModifier;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
@@ -120,6 +121,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourg
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.mini.PotionOfBurning;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.mini.PotionOfBurst;
+import com.shatteredpixel.shatteredpixeldungeon.items.potions.mini.PotionOfSwift;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -511,7 +513,7 @@ public abstract class Char extends Actor {
 				dmg *= 0.67f;
 			}
 
-			if (Dungeon.hero.buff(PotionOfBurst.Burst.class) != null){
+			if (Dungeon.hero.buff(PotionOfBurst.BurstMini.class) != null){
 				dmg *= 1.3f;
 			}
 
@@ -704,6 +706,8 @@ public abstract class Char extends Actor {
 		if (defender.buff(Bless.class) != null) defRoll *= 1.25f;
 		if (defender.buff(  Hex.class) != null) defRoll *= 0.8f;
 		if (defender.buff( Daze.class) != null) defRoll *= 0.5f;
+		if (defender.buff(PotionOfSwift.SwiftMini.class) != null) defRoll *= 1.25f;
+
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
@@ -768,7 +772,7 @@ public abstract class Char extends Actor {
 			damage = armor.absorb( damage );
 		}
 
-		PotionOfBurning.Burning potion = buff( PotionOfBurning.Burning.class );
+		PotionOfBurning.BurningMini potion = buff( PotionOfBurning.BurningMini.class );
 		if (potion != null) {
 			int a =potion.getLvl();
 			int b = potion.getCount();
@@ -982,6 +986,7 @@ public abstract class Char extends Actor {
 		if (buff( Paralysis.class ) != null) {
 			buff( Paralysis.class ).processDamage(dmg);
 		}
+		dmg = CombatModifier.INSTANCE.damage(this, dmg, src);
 
 		BrokenSeal.WarriorShield shield = buff(BrokenSeal.WarriorShield.class);
 		if (!(src instanceof Hunger)
@@ -993,6 +998,8 @@ public abstract class Char extends Actor {
 			sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(buff(BrokenSeal.WarriorShield.class).maxShield()), FloatingText.SHIELDING);
 			shield.activate();
 		}
+
+//		dmg = CombatModifier.INSTANCE.damage(this, dmg, src);
 
 		int shielded = dmg;
 		dmg = ShieldBuff.processDamage(this, dmg, src);
